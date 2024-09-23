@@ -1,29 +1,8 @@
-/*
- Copyright 2013 Sebastián Katzer
-
- Licensed to the Apache Software Foundation (ASF) under one
- or more contributor license agreements.  See the NOTICE file
- distributed with this work for additional information
- regarding copyright ownership.  The ASF licenses this file
- to you under the Apache License, Version 2.0 (the
- "License"); you may not use this file except in compliance
- with the License.  You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing,
- software distributed under the License is distributed on an
- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- KIND, either express or implied.  See the License for the
- specific language governing permissions and limitations
- under the License.
- */
-
 package de.appplant.cordova.plugin.printer;
 
 import android.print.PrintAttributes;
-import android.support.annotation.NonNull;
-import android.support.v4.print.PrintHelper;
+import androidx.annotation.NonNull;
+import androidx.core.print.PrintHelper;
 
 import org.json.JSONObject;
 
@@ -35,64 +14,39 @@ import static android.print.PrintAttributes.Margins.NO_MARGINS;
 import static android.print.PrintAttributes.MediaSize.UNKNOWN_LANDSCAPE;
 import static android.print.PrintAttributes.MediaSize.UNKNOWN_PORTRAIT;
 import static android.print.PrintDocumentInfo.PAGE_COUNT_UNKNOWN;
-import static android.support.v4.print.PrintHelper.ORIENTATION_LANDSCAPE;
-import static android.support.v4.print.PrintHelper.ORIENTATION_PORTRAIT;
-import static android.support.v4.print.PrintHelper.SCALE_MODE_FILL;
-import static android.support.v4.print.PrintHelper.SCALE_MODE_FIT;
+import static androidx.core.print.PrintHelper.ORIENTATION_LANDSCAPE;
+import static androidx.core.print.PrintHelper.ORIENTATION_PORTRAIT;
+import static androidx.core.print.PrintHelper.SCALE_MODE_FILL;
+import static androidx.core.print.PrintHelper.SCALE_MODE_FIT;
 
 /**
  * Wrapper for the print job settings.
  */
-class PrintOptions
-{
-    // The print job settings
+class PrintOptions {
     private final @NonNull JSONObject spec;
 
-    /**
-     * Constructor
-     *
-     * @param spec The print job settings.
-     */
-    PrintOptions (@NonNull JSONObject spec)
-    {
+    PrintOptions(@NonNull JSONObject spec) {
         this.spec = spec;
     }
 
-    /**
-     * Returns the name for the print job.
-     */
-    @NonNull String getJobName()
-    {
+    @NonNull String getJobName() {
         String jobName = spec.optString("name");
-
-        if (jobName == null || jobName.isEmpty())
-        {
+        if (jobName == null || jobName.isEmpty()) {
             jobName = "Printer Plugin Job #" + System.currentTimeMillis();
         }
-
         return jobName;
     }
 
-    /**
-     * Returns the max page count.
-     */
-    int getPageCount()
-    {
+    int getPageCount() {
         int count = spec.optInt("pageCount", PAGE_COUNT_UNKNOWN);
-
         return count <= 0 ? PAGE_COUNT_UNKNOWN : count;
     }
 
-    /**
-     * Converts the options into a PrintAttributes object.
-     */
-    @NonNull PrintAttributes toPrintAttributes()
-    {
+    @NonNull PrintAttributes toPrintAttributes() {
         PrintAttributes.Builder builder = new PrintAttributes.Builder();
-        Object margin                   = spec.opt("margin");
+        Object margin = spec.opt("margin");
 
-        switch (spec.optString("orientation"))
-        {
+        switch (spec.optString("orientation")) {
             case "landscape":
                 builder.setMediaSize(UNKNOWN_LANDSCAPE);
                 break;
@@ -101,27 +55,20 @@ class PrintOptions
                 break;
         }
 
-        if (spec.has("monochrome"))
-        {
-            if (spec.optBoolean("monochrome"))
-            {
+        if (spec.has("monochrome")) {
+            if (spec.optBoolean("monochrome")) {
                 builder.setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME);
-            }
-            else
-            {
+            } else {
                 builder.setColorMode(PrintAttributes.COLOR_MODE_COLOR);
             }
         }
 
-        if (margin instanceof Boolean && !((Boolean) margin))
-        {
+        if (margin instanceof Boolean && !((Boolean) margin)) {
             builder.setMinMargins(NO_MARGINS);
         }
 
-        if (SDK_INT >= 23)
-        {
-            switch (spec.optString("duplex"))
-            {
+        if (SDK_INT >= 23) {
+            switch (spec.optString("duplex")) {
                 case "long":
                     builder.setDuplexMode(DUPLEX_MODE_LONG_EDGE);
                     break;
@@ -137,15 +84,8 @@ class PrintOptions
         return builder.build();
     }
 
-    /**
-     * Tweaks the printer helper depending on the job spec.
-     *
-     * @param printer The printer to decorate.
-     */
-    void decoratePrintHelper (@NonNull PrintHelper printer)
-    {
-        switch (spec.optString("orientation"))
-        {
+    void decoratePrintHelper(@NonNull PrintHelper printer) {
+        switch (spec.optString("orientation")) {
             case "landscape":
                 printer.setOrientation(ORIENTATION_LANDSCAPE);
                 break;
@@ -154,24 +94,17 @@ class PrintOptions
                 break;
         }
 
-        if (spec.has("monochrome"))
-        {
-            if (spec.optBoolean("monochrome"))
-            {
+        if (spec.has("monochrome")) {
+            if (spec.optBoolean("monochrome")) {
                 printer.setColorMode(PrintHelper.COLOR_MODE_MONOCHROME);
-            }
-            else
-            {
+            } else {
                 printer.setColorMode(PrintHelper.COLOR_MODE_COLOR);
             }
         }
 
-        if (spec.optBoolean("autoFit", true))
-        {
+        if (spec.optBoolean("autoFit", true)) {
             printer.setScaleMode(SCALE_MODE_FIT);
-        }
-        else
-        {
+        } else {
             printer.setScaleMode(SCALE_MODE_FILL);
         }
     }
