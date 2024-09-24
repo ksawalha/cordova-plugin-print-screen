@@ -1,51 +1,26 @@
 {
-  "name": "cordova-plugin-printer",
+  "name": "cordova-plugin-printscreen",
   "version": "1.0.0",
-  "description": "Prints HTML documents",
+  "description": "Cordova plugin to capture and print the current view of an OutSystems mobile app using a Bluetooth thermal printer",
+  "main": "www/printScreen.js",
+  "keywords": [
+    "cordova",
+    "bluetooth",
+    "printer",
+    "thermal",
+    "screenshot",
+    "escpos",
+    "outsystems"
+  ],
+  "author": "Karam Sawalha",
+  "license": "MIT",
   "cordova": {
-    "id": "cordova-plugin-printer",
+    "id": "cordova-plugin-printscreen",
     "platforms": [
-      "ios",
-      "android",
-      "windows",
-      "browser"
+      "android"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ksawalha/cordova-plugin-printer.git"
-  },
-  "keywords": [
-    "appplant",
-    "printer",
-    "cordova",
-    "ecosystem:cordova",
-    "cordova-ios",
-    "cordova-android",
-    "cordova-windows",
-    "cordova-browser"
-  ],
-  "engines": [
-    {
-      "name": "cordova",
-      "version": ">=10.0.0"
-    },
-    {
-      "name": "android-sdk",
-      "version": ">=19"
-    },
-    {
-      "name": "apple-ios",
-      "version": ">=10.0"
-    }
-  ],
-  "author": "Sebastián Katzer",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/ksawalha/cordova-plugin-printer/issues"
-  },
-  "homepage": "https://github.com/ksawalha/cordova-plugin-printer#readme",
   "dependencies": {
-    "cordova-plugin-androidx-adapter": "^1.2.0"
+    "cordova-plugin-screenshot": "^0.1.1" 
   }
 }
