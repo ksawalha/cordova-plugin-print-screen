@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-print-screen"
+        id="cordova-plugin-printscreen"
         version="1.0.0">
     <name>PrintScreenPlugin</name>
-    <description>Plugin to print the current screen using a Bluetooth thermal printer</description>
+    <description>Plugin to print the current view using a Bluetooth thermal printer</description>
     <license>MIT</license>
-    <keywords>bluetooth, printer, screenshot, thermal</keywords>
+    <keywords>bluetooth, printer, escpos, thermal, screenshot</keywords>
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -13,7 +13,6 @@
             <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
             <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         </config-file>
         <source-file src="src/android/PrintScreenPlugin.java" target-dir="src/android"/>
     </platform>
