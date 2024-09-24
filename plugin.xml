@@ -1,81 +1,22 @@
-<plugin id="cordova-plugin-printer"
-        xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-bluetooth-printer"
         version="1.0.0">
-
-    <name>Printer</name>
-
-    <description>Prints HTML content</description>
-
-    <repo>https://github.com/katzer/cordova-plugin-printer.git</repo>
-
-    <keywords>appplant, printer, cordova</keywords>
-
-    <license>Apache 2.0</license>
-
-    <author>Sebastián Katzer</author>
-
-    <engines>
-        <engine name="cordova" version=">=3.0.0" />
-        <engine name="android-sdk" version=">=19" />
-        <engine name="apple-ios" version=">=8.0" />
-    </engines>
-
-    <js-module src="www/printer.js" name="Printer">
-        <clobbers target="cordova.plugins.printer" />
-    </js-module>
-
-    <!-- iOS Platform -->
-    <platform name="ios">
-        <config-file target="config.xml" parent="/*">
-            <feature name="Printer">
-                <param name="ios-package" value="APPPrinter"/>
-            </feature>
-        </config-file>
-
-        <header-file src="src/ios/APPPrinter.h" />
-        <source-file src="src/ios/APPPrinter.m" />
-        <!-- Include other iOS source/header files as needed -->
-    </platform>
-
-    <!-- Android Platform -->
+    <name>BluetoothPrinter</name>
+    <description>Cordova Plugin for printing HTML using Bluetooth ESC/POS printer</description>
+    <license>MIT</license>
+    <keywords>bluetooth, printer, thermal</keywords>
     <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Printer">
-                <param name="android-package" value="de.appplant.cordova.plugin.printer.Printer"/>
-            </feature>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.BLUETOOTH"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         </config-file>
-
-        <preference name="ANDROIDX_SUPPORT_VERSION" default="1.0.0"/>
-        <framework src="androidx.print:print:$ANDROIDX_SUPPORT_VERSION"/>
-        <framework src="androidx.appcompat:appcompat:1.2.0"/>
-
-        <source-file src="src/android/PrintAdapter.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/PrintContent.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/Printer.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/PrintIO.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/PrintManager.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/PrintOptions.java" target-dir="src/de/appplant/cordova/plugin/printer" />
-        <source-file src="src/android/PrintProxy.java" target-dir="src/de/appplant/cordova/plugin/printer" />
+        <source-file src="src/android/BluetoothPrinter.java" target-dir="src/android"/>
     </platform>
-
-    <!-- Windows Platform -->
-    <platform name="windows">
-        <js-module src="src/windows/PrinterProxy.js" name="PrinterProxy">
-            <merges target="" />
-        </js-module>
-    </platform>
-
-    <!-- Browser Platform -->
-    <platform name="browser">
-        <config-file target="config.xml" parent="/*">
-            <feature name="Printer">
-                <param name="browser-package" value="Printer"/>
-            </feature>
-        </config-file>
-
-        <js-module src="src/browser/PrinterProxy.js" name="Printer.Proxy">
-            <runs />
-        </js-module>
-    </platform>
+    <js-module src="www/bluetoothPrinter.js" name="BluetoothPrinter">
+        <clobbers target="BluetoothPrinter"/>
+    </js-module>
 </plugin>
