@@ -1,26 +1,25 @@
 {
   "name": "cordova-plugin-printscreen",
   "version": "1.0.0",
-  "description": "Cordova plugin to capture and print the current view of an OutSystems mobile app using a Bluetooth thermal printer",
+  "description": "Cordova plugin to capture and print the current view using a Bluetooth thermal printer",
   "main": "www/printScreen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [
     "cordova",
     "bluetooth",
     "printer",
-    "thermal",
-    "screenshot",
     "escpos",
-    "outsystems"
+    "thermal",
+    "screenshot"
   ],
-  "author": "Karam Sawalha",
+  "author": "Your Name",
   "license": "MIT",
   "cordova": {
     "id": "cordova-plugin-printscreen",
     "platforms": [
       "android"
     ]
-  },
-  "dependencies": {
-    "cordova-plugin-screenshot": "^0.1.1" 
   }
 }
