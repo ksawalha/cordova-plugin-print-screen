@@ -3,7 +3,6 @@ package cordova.plugin.printscreen;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.bluetooth.BluetoothAdapter;
