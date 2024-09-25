@@ -1,4 +1,4 @@
-package cordova.plugin.printscreen;
+package com.karamsawalha.fjo.printscreen;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -43,7 +43,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
             @Override
             public void run() {
                 try {
-                    // Capture the screen
                     View view = activity.getWindow().getDecorView().getRootView();
                     Bitmap bitmap = getBitmapFromView(view);
 
@@ -51,7 +50,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
                         Log.d(TAG, "Screen capture successful");
                         byte[] printData = bitmapToEscPos(bitmap);
 
-                        // Print the data via Bluetooth
                         if (printData != null) {
                             connectAndPrint(printData, callbackContext);
                         } else {
@@ -68,7 +66,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
         });
     }
 
-    // Capture the current view as a Bitmap
     private Bitmap getBitmapFromView(View view) {
         int width = view.getWidth();
         int height = view.getHeight();
@@ -78,46 +75,43 @@ public class PrintScreenPlugin extends CordovaPlugin {
         return bitmap;
     }
 
-    // Convert Bitmap to ESC/POS image data
     private byte[] bitmapToEscPos(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int widthBytes = (width + 7) / 8;  // Ensure width is a multiple of 8
+        int widthBytes = (width + 7) / 8;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        // ESC/POS command to set line spacing
-        baos.write(0x1B);  // ESC
-        baos.write(0x33);  // Set line spacing
-        baos.write(24);    // 24-dot line height
+        baos.write(0x1B);
+        baos.write(0x33);
+        baos.write(24);
 
         for (int y = 0; y < height; y += 24) {
-            baos.write(0x1B);  // ESC
-            baos.write(0x2A);  // Image print mode
-            baos.write(0x21);  // 24-dot double-density
-            baos.write(widthBytes);  // Width in bytes
-            baos.write(0x00);  // LSB
+            baos.write(0x1B);
+            baos.write(0x2A);
+            baos.write(0x21);
+            baos.write(widthBytes);
+            baos.write(0x00);
 
             for (int x = 0; x < width; x++) {
                 for (int k = 0; k < 24; k++) {
                     int bit = 0;
                     if (y + k < height) {
                         int pixel = bitmap.getPixel(x, y + k);
-                        int gray = (pixel & 0xFF);  // Get grayscale value
-                        if (gray < 128) {  // Thresholding
+                        int gray = (pixel & 0xFF);
+                        if (gray < 128) {
                             bit |= (1 << (7 - k % 8));
                         }
                     }
                     baos.write(bit);
                 }
             }
-            baos.write(0x0A);  // New line
+            baos.write(0x0A);
         }
 
         return baos.toByteArray();
     }
 
-    // Connect to Bluetooth printer and print ESC/POS image data
     private void connectAndPrint(byte[] printData, CallbackContext callbackContext) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -130,11 +124,10 @@ public class PrintScreenPlugin extends CordovaPlugin {
             return;
         }
 
-        // Discover paired devices
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
-                if (device.getName().contains("XP-P800")) {  // Match printer by name
+                if (device.getName().contains("XP-P800")) {
                     bluetoothDevice = device;
                     break;
                 }
@@ -147,7 +140,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
         }
 
         try {
-            // Connect to the printer
             bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(PRINTER_UUID);
             bluetoothSocket.connect();
             Log.d(TAG, "Bluetooth connection established");
@@ -157,7 +149,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
             outputStream.flush();
             Log.d(TAG, "Data sent to printer");
 
-            // Close the connection
             outputStream.close();
             bluetoothSocket.close();
             callbackContext.success("Printed successfully!");
