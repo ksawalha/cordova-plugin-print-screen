@@ -14,7 +14,7 @@
             <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
             <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         </config-file>
-        <source-file src="src/android/PrintScreenPlugin.java" target-dir="src/com/karamsawalha/printscreen"/>
+        <source-file src="src/android/com/karamsawalha/fjo/printscreen/PrintScreenPlugin.java" target-dir="src/com/karamsawalha/fjo/printscreen"/>
     </platform>
     <js-module src="www/printScreen.js" name="PrintScreen">
         <clobbers target="PrintScreen"/>
