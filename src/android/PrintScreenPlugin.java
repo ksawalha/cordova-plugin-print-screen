@@ -1,4 +1,4 @@
-package com.karamsawalha.fjo.printscreen;
+package com.karamsawalha.fjo;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -47,7 +47,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
                     Bitmap bitmap = getBitmapFromView(view);
 
                     if (bitmap != null) {
-                        Log.d(TAG, "Screen capture successful");
                         byte[] printData = bitmapToEscPos(bitmap);
 
                         if (printData != null) {
@@ -59,7 +58,6 @@ public class PrintScreenPlugin extends CordovaPlugin {
                         callbackContext.error("Failed to capture screen.");
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, "Error capturing screen", e);
                     callbackContext.error("Error capturing screen: " + e.getMessage());
                 }
             }
@@ -142,19 +140,16 @@ public class PrintScreenPlugin extends CordovaPlugin {
         try {
             bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(PRINTER_UUID);
             bluetoothSocket.connect();
-            Log.d(TAG, "Bluetooth connection established");
 
             outputStream = bluetoothSocket.getOutputStream();
             outputStream.write(printData);
             outputStream.flush();
-            Log.d(TAG, "Data sent to printer");
 
             outputStream.close();
             bluetoothSocket.close();
             callbackContext.success("Printed successfully!");
 
         } catch (Exception e) {
-            Log.e(TAG, "Error during Bluetooth connection/printing", e);
             callbackContext.error("Failed to print. Error: " + e.getMessage());
         }
     }
